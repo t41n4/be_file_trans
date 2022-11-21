@@ -86,16 +86,12 @@ class UserController extends Controller
             // validate
             $isValid = $request->validate([
                 'username' => 'required|string|min:3',
-                'userEmail' => 'required|string|unique:users,userEmail',
                 'password' => 'required|min:4|confirmed',
-                'userFullName' => 'required|string',
-                'userTelephone' => 'required|string'
             ]);
             if ($isValid) {
                 $user = new User;
                 $user->userName = $request->username;
                 $user->password =  bcrypt($request->password);
-                $user->userRoleID = $request->userRoleID;
                 $isSuccess = $user->save();
                 return response()->json([
                     'user created' => $user,
