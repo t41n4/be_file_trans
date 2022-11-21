@@ -20,11 +20,11 @@ use App\Models\Role;
 */
 // Route Public API
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::post('/register', [AuthController::class, 'register']);
 
 // Route User
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/register', [AuthController::class, 'register']);
+
     Route::get('/getAllUser', [UserController::class, 'index']);
     Route::get('/getSpecifyUser', [UserController::class, 'getbyid']);
     Route::put('/updateUser', [UserController::class, 'edit']);
