@@ -44,6 +44,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // if empty username or password
+        if (empty($request->username) || empty($request->password)) {
+            return response()->json([
+                'message' => 'Username or password is empty'
+            ], 401);
+        }
         $fields = $request->validate([
             'username' => 'required|string|min:3',
             'password' => 'required|min:4',
@@ -67,17 +73,16 @@ class AuthController extends Controller
 
         // remove username field in user data
         $userReturnData = [
-            'userID' => $user->userID,
-            'userRoleID' => $user->userRoleID,
+            'userID' => $user->id,
             'username' => $user->username,
         ];
 
-        $total_active_time = DB::table('devices')->where('id', '1')->first();
+
 
         $response = [
             'user' => $userReturnData,
             'token' => $token,
-            'total_active_time' => $total_active_time == null ? 0 : $total_active_time->total_active_time,
+
             'message' => 'Login success'
         ];
 
