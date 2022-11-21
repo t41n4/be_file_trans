@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
+    public function username(){
+        return 'username';
+    }
     // const timeout = 60;
     // 30 days
     const timeout = 60 * 60 * 24 * 30;
-
     public function register(Request $request)
     {
         $fields = $request->validate([
