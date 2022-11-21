@@ -18,37 +18,26 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // get token
-        $token = $request->bearerToken();
-        // bcrypt token
-        $token = hash('sha256', $token);
-        // get userID by token
-        $userID = DB::table('personal_access_tokens')->where('token', $token)->first()->tokenable_id;
-        // check if user is admin
-        $isAdmin = DB::table('users')->where('userID', $userID)->first()->userRoleID == 1;
+        $fields = $request->validate([
+            'username' => 'required|string|unique:users,username|min:3',
+            'password' => 'required|min:4|confirmed',
+        ]);
 
-        if ($isAdmin) {
-            $fields = $request->validate([
-                'username' => 'required|string|unique:users,username|min:3',
-                'password' => 'required|min:4|confirmed',
-            ]);
+        $user = User::create([
+            'username' => $fields['username'],
+            'userRoleID' => '2',
+            'password' => bcrypt($fields['password'])
+        ]);
 
-            $user = User::create([
-                'username' => $fields['username'],
-                'userRoleID' => '2',
-                'password' => bcrypt($fields['password'])
-            ]);
+        $token = $user->createToken('myToken')->plainTextToken;
 
-            $token = $user->createToken('myToken')->plainTextToken;
+        $response = [
+            'user' => $user,
+            'token' => $token,
+            'message' => 'User created'
+        ];
+        return response($response, 201);
 
-            $response = [
-                'user' => $user,
-                'token' => $token,
-                'message' => 'User created'
-            ];
-
-            return response($response, 201);
-        }
         return response()->json([
             'message' => 'You have no permission'
         ], 401);
