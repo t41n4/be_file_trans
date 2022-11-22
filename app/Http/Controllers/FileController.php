@@ -56,8 +56,18 @@ class FileController extends Controller
     // get file from database
     public function getFile(Request $request)
     {
-        // get all file from database
-        $file = DB::table('files')->get();
-        return response()->json($file);
+        // get bearer token
+        $token = $request->bearerToken();
+        // hash token
+        $token = hash('sha256', $token);
+        // get user id from token
+        $user_id = DB::table('personal_access_tokens')->where('token', $token)->first()->tokenable_id;
+        // get every file that to this user
+        $files = DB::table('files')->where('user_id_to', $user_id)->get();
+        // add user name to file
+        foreach ($files as $file) {
+            $file->From = DB::table('users')->where('id', $file->user_id_from)->first()->name;
+        }
+        return response()->json($files);
     }
 }
