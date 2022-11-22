@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ItemController;
 use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\FileController;
 use App\Models\Role;
 /*
 |--------------------------------------------------------------------------
@@ -24,15 +24,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 // Route User
 Route::group(['middleware' => ['auth:sanctum']], function () {
-
-    Route::get('/getAllUser', [UserController::class, 'index']);
-    Route::get('/getSpecifyUser', [UserController::class, 'getbyid']);
-    Route::put('/updateUser', [UserController::class, 'edit']);
-    Route::delete('/deleteUser', [UserController::class, 'destroy']);
-    Route::post('/insertUser', [UserController::class, 'create']);
-    // get my profile
-    Route::get('/getMyProfile', [UserController::class, 'getMyProfile']);
-
+    Route::get('/getfile', [FileController::class, 'getfile']);
 });
 Route::post('/log', [DeviceController::class, 'postLog']);
 
