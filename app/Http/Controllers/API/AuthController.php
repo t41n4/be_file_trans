@@ -26,8 +26,6 @@ class AuthController extends Controller
                 'message' => 'Token is invalid',
             ], 401);
         }
-
-
     }
     public function username(){
         return 'username';
@@ -40,11 +38,13 @@ class AuthController extends Controller
         $fields = $request->validate([
             'username' => 'required|string|unique:users,username|min:3',
             'password' => 'required|min:4|confirmed',
+            'name' => 'required|string',
         ]);
 
         $user = User::create([
             'username' => $fields['username'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'name' => $fields['name'],
         ]);
 
         $token = $user->createToken('myToken')->plainTextToken;
