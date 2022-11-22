@@ -21,7 +21,7 @@ use App\Models\Role;
 // Route Public API
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-
+Route::post('/checkToken', [AuthController::class, 'checkToken']);
 // Route User
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getfile', [FileController::class, 'getfile']);

@@ -58,7 +58,6 @@ class FileController extends Controller
     {
         // get all file from database
         $file = DB::table('files')->get();
-
         return response()->json($file);
     }
 }

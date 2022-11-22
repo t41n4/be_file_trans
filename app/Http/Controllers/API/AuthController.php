@@ -12,6 +12,23 @@ use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
+    public function checkToken(Request $request){
+        // if token exist in personal access token table
+        // hash token
+        if (DB::table('personal_access_tokens')->where('token',  hash('sha256', $request->bearerToken()))->first()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Token is valid',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Token is invalid',
+            ], 401);
+        }
+
+
+    }
     public function username(){
         return 'username';
     }
