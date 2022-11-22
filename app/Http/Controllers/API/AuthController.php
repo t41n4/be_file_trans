@@ -96,8 +96,8 @@ class AuthController extends Controller
             'username' => $user->username,
         ];
 
-
-
+        //update status to online
+        $user->status = 'online';
         $response = [
             'user' => $userReturnData,
             'token' => $token,
@@ -113,7 +113,8 @@ class AuthController extends Controller
     public function logout(User $user)
     {
         $user->tokens()->delete();
-
+        // update status to offline
+        $user->status = 'offline';
         return [
             'message' => 'User logged out'
         ];
