@@ -97,11 +97,10 @@ class AuthController extends Controller
         ];
 
         //update status to online
-        $user->status = 'online';
+        DB::table('users')->where('id', $user->id)->update(['status' => 'online']);
         $response = [
             'user' => $userReturnData,
             'token' => $token,
-
             'message' => 'Login success'
         ];
 
@@ -112,9 +111,16 @@ class AuthController extends Controller
 
     public function logout(User $user)
     {
-        $user->tokens()->delete();
+        // get bearer token
+        $token = request()->bearerToken();
+        // hash token
+        $token = hash('sha256', $token);
+        // get user id from token
+        $user_id = DB::table('personal_access_tokens')->where('token', $token)->first()->tokenable_id;
+        // delete token
+        DB::table('personal_access_tokens')->where('token', $token)->delete();
         // update status to offline
-        $user->status = 'offline';
+       DB::table('users')->where('id', $user_id)->update(['status' => 'offline']);
         return [
             'message' => 'User logged out'
         ];
