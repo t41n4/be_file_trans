@@ -8,53 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class FileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\files  $files
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\files  $files
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\files  $files
-     * @return \Illuminate\Http\Response
-     */
-
     // get file from database
-    public function getFile(Request $request)
+    public function getfile(Request $request)
     {
         // get bearer token
         $token = $request->bearerToken();
@@ -69,5 +24,12 @@ class FileController extends Controller
             $file->From = DB::table('users')->where('id', $file->user_id_from)->first()->name;
         }
         return response()->json($files);
+    }
+    public function getuser (Request $request)
+    {
+       //get username, name, public_key, status every user that online
+        $users = DB::table('users')->where('status', 'online')->get();
+
+        return response()->json($users);
     }
 }
