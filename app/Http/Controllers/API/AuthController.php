@@ -95,7 +95,7 @@ class AuthController extends Controller
         $userReturnData = [
             'userID' => $user->id,
             'username' => $user->username,
-            'public_key' => $user->public_key,
+
         ];
 
         //update status to online
@@ -103,6 +103,7 @@ class AuthController extends Controller
         $response = [
             'user' => $userReturnData,
             'token' => $token,
+            'public_key' => $user->public_key,
             'message' => 'Login success'
         ];
 
