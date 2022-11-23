@@ -18,7 +18,8 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Token is valid',
-                'public_key' => DB::table('users')->where('id', DB::table('personal_access_tokens')->where('token',  hash('sha256', $request->bearerToken()))->first()->tokenable_id)->first()->public_key
+                'public_key' => DB::table('users')->where('id', DB::table('personal_access_tokens')->where('token',  hash('sha256', $request->bearerToken()))->first()->tokenable_id)->first()->public_key,
+                'username' => DB::table('users')->where('id', DB::table('personal_access_tokens')->where('token',  hash('sha256', $request->bearerToken()))->first()->tokenable_id)->first()->username,
             ], 200);
         } else {
             return response()->json([
