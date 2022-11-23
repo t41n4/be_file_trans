@@ -9,7 +9,6 @@ use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-
 class AuthController extends Controller
 {
     public function checkToken(Request $request){
@@ -39,12 +38,14 @@ class AuthController extends Controller
             'username' => 'required|string|unique:users,username|min:3',
             'password' => 'required|min:4|confirmed',
             'name' => 'required|string',
+            'public_key' => 'required|string',
         ]);
 
         $user = User::create([
             'username' => $fields['username'],
             'password' => bcrypt($fields['password']),
             'name' => $fields['name'],
+            'public_key' => $fields['public_key'],
         ]);
 
         $token = $user->createToken('myToken')->plainTextToken;
@@ -103,8 +104,6 @@ class AuthController extends Controller
             'token' => $token,
             'message' => 'Login success'
         ];
-
-
 
         return response($response, 201);
     }
