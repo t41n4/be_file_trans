@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\DB;
 
 class FileController extends Controller
 {
+    // update public key
+    public function updatePublicKey(Request $request){
+        $fields = $request->validate([
+            'public_key' => 'required|string',
+        ]);
+        $user = DB::table('users')->where('id', $request->user()->id)->update([
+            'public_key' => $fields['public_key'],
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Public key updated',
+        ], 200);
+    }
     // get file from database
     public function getfile(Request $request)
     {
