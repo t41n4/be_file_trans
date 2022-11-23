@@ -48,6 +48,7 @@ class AuthController extends Controller
             'password' => bcrypt($fields['password']),
             'name' => $fields['name'],
             'public_key' => $fields['public_key'],
+            'status' => 'online',
         ]);
 
         $token = $user->createToken('myToken')->plainTextToken;
