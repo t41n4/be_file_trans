@@ -26,6 +26,7 @@ Route::post('/checkToken', [AuthController::class, 'checkToken']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getfile', [FileController::class, 'getfile']);
     Route::get('/getuser', [FileController::class, 'getuser']);
+    Route::post('/uploadfile', [FileController::class, 'uploadfile']);
 
 });
 Route::post('/log', [DeviceController::class, 'postLog']);

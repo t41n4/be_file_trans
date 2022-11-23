@@ -32,4 +32,32 @@ class FileController extends Controller
 
         return response()->json($users);
     }
+    // uploadfile
+    public function uploadfile(Request $request){
+        try {
+            // insert file
+        $file = new files;
+        $file->user_id_from =  DB::table('personal_access_tokens')->where('token', hash('sha256', $request->bearerToken()))->first()->tokenable_id;
+        $file->user_id_to = DB::table('users')->where('username', $request->user_to)->first()->id;
+        $file->file_name = $request->file_name;
+        $file->file_link = $request->file_link;
+        $file->file_signature = $request->file_signature;
+        $file->time_upload = date('Y-m-d H:i:s');
+        $file->aes_key = $request->aes_key;
+        $file->aes_iv = $request->aes_iv;
+        $file->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'File uploaded',
+        ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'File upload failed',
+                'error' => $th->getMessage(),
+            ], 401);
+        }
+
+    }
 }
