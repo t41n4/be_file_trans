@@ -21,7 +21,7 @@ class FileController extends Controller
         $files = DB::table('files')->where('user_id_to', $user_id)->get();
         // add user name to file
         foreach ($files as $file) {
-            $file->From = DB::table('users')->where('id', $file->user_id_from)->first()->name;
+            $file->From = DB::table('users')->where('id', $file->user_id_from)->first()->username;
         }
         return response()->json($files);
     }
